@@ -38,7 +38,6 @@ class HomeFragment : Fragment() {
             val steamWebUrl = "https://store.steampowered.com/"
             val steamUri = "steam://store/".toUri()
 
-            // test
             val intent = Intent(Intent.ACTION_VIEW, steamUri).apply {
                 addCategory(Intent.CATEGORY_BROWSABLE)
             }
