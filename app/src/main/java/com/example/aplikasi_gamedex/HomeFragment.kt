@@ -2,7 +2,6 @@ package com.example.aplikasi_gamedex
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -39,6 +38,7 @@ class HomeFragment : Fragment() {
             val steamWebUrl = "https://store.steampowered.com/"
             val steamUri = "steam://store/".toUri()
 
+            // test
             val intent = Intent(Intent.ACTION_VIEW, steamUri).apply {
                 addCategory(Intent.CATEGORY_BROWSABLE)
             }
@@ -46,7 +46,7 @@ class HomeFragment : Fragment() {
             // Pengecekan apakah perangkat memiliki aplikasinya
             try {
                 startActivity(intent)
-            } catch (e: ActivityNotFoundException) {
+            } catch (_: ActivityNotFoundException) {
                 // Jika aplikasi tidak ada, buka web browser
                 val webIntent = Intent(Intent.ACTION_VIEW, steamWebUrl.toUri())
                 startActivity(webIntent)
