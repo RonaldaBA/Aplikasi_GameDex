@@ -3,7 +3,10 @@
     <string name="action_settings">Settings</string>
     <!-- Strings used for fragments for navigation -->
     <string name="home_fragment_label">Home</string>
-    <string name="second_fragment_label">Second Fragment</string>
+    <string name="sales_fragment_label">Sales</string>
+    <string name="favorite_fragment_label">Favorite</string>
+    <string name="settings_fragment_label">Settings</string>
+    <string name="details_fragment_label">Details Application</string>
     <string name="next">Next</string>
     <string name="previous">Previous</string>
 

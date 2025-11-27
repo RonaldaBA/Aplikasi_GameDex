@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
         appBarConfiguration = AppBarConfiguration(
             setOf(
                 R.id.HomeFragment,
-                R.id.SecondFragment
+                R.id.SalesFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -40,7 +40,15 @@ class MainActivity : AppCompatActivity() {
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
                 R.id.HomeFragment -> binding.toolbar.visibility = View.GONE
-                else -> binding.toolbar.visibility = View.VISIBLE
+                R.id.DetailsFragment -> {
+                    binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = false
+                    binding.bottomNav.visibility = View.GONE
+                }
+                else -> {
+                    binding.toolbar.visibility = View.VISIBLE
+                    binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = true
+                    binding.bottomNav.visibility = View.VISIBLE
+                }
             }
         }
     }
@@ -49,6 +57,22 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration)
                 || super.onSupportNavigateUp()
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_top, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_detail -> {
+                findNavController(R.id.nav_host_fragment_content_main)
+                    .navigate(R.id.action_to_DetailsFragment)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun applySavedTheme() {
