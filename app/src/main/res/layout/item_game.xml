@@ -36,12 +36,24 @@
                 android:maxLines="2"
                 android:ellipsize="end"/>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="6dp">
+
+            <ImageView
+                android:id="@+id/imgStore"
+                android:layout_width="14dp"
+                android:layout_height="14dp"/>
+
             <TextView
                 android:id="@+id/tvStore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginStart="4dp"
                 android:textSize="12sp"/>
+            </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -57,11 +69,27 @@
 
                 <TextView
                     android:id="@+id/tvNormalPrice"
-                    android:layout_marginStart="8dp"
+                    android:layout_marginStart="4dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="12sp"/>
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvSavings"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#549159"
+                android:textStyle="bold"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/discount_bg"
+                android:paddingStart="6dp"
+                android:paddingEnd="6dp"
+                android:paddingTop="2dp"
+                android:paddingBottom="2dp"
+                android:textSize="12sp"
+                android:visibility="gone" />
+
         </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

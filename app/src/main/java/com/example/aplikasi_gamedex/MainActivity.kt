@@ -12,6 +12,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.ui.setupWithNavController
 import com.example.aplikasi_gamedex.databinding.ActivityMainBinding
+import com.google.android.material.appbar.AppBarLayout
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,16 +31,26 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.HomeFragment,
-                R.id.SalesFragment
+                R.id.SplashFragment,
+                R.id.ViewPagerFragment,
+                R.id.SalesFragment,
+                R.id.SettingsFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.bottomNav.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.appBarLayout.setExpanded(true, true)
             when (destination.id) {
-                R.id.HomeFragment -> binding.toolbar.visibility = View.GONE
+                R.id.SplashFragment -> {
+                    binding.toolbar.visibility = View.GONE
+                    binding.bottomNav.visibility = View.GONE
+                }
+                R.id.ViewPagerFragment -> {
+                    binding.toolbar.visibility = View.GONE
+                    binding.bottomNav.visibility = View.GONE
+                }
                 R.id.DetailsFragment -> {
                     binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = false
                     binding.bottomNav.visibility = View.GONE
