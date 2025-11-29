@@ -1,5 +1,9 @@
 package com.example.aplikasi_gamedex.models
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class CheapSharkDeal(
     val internalName: String?,
     val title: String,
@@ -18,4 +22,4 @@ data class CheapSharkDeal(
     val lastChange: Long?,
     val dealRating: String?,
     val thumb: String
-)
+) : Parcelable
