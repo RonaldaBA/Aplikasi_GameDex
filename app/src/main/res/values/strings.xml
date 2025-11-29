@@ -4,7 +4,7 @@
     <!-- Strings used for fragments for navigation -->
     <string name="home_fragment_label">Home</string>
     <string name="sales_fragment_label">Sales</string>
-    <string name="favorite_fragment_label">Favorite</string>
+    <string name="favorite_fragment_label">Favorites</string>
     <string name="settings_fragment_label">Settings</string>
     <string name="details_fragment_label">Details</string>
     <string name="now_price">Now</string>
