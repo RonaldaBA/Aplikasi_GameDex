@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.aplikasi_gamedex.databinding.FragmentSalesBinding
@@ -39,8 +40,14 @@ class SalesFragment : Fragment() {
 
     // KEMBALIKAN KE TOAST: Mengklik item hanya akan menampilkan Toast
     private val adapter = GamesAdapter(onClick = { deal ->
-        Toast.makeText(requireContext(), "Klik: ${deal.title}", Toast.LENGTH_SHORT).show()
+        val bundle = Bundle().apply {
+            putString("gameID", deal.gameID ?: "")
+            putString("title", deal.title)
+        }
+        findNavController().navigate(R.id.DetailsGamesFragment, bundle)
     })
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,

@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 interface CheapSharkAPI {
     @GET("deals")
     suspend fun getDeals(
-        @Query("storeID") storeID: Int,
+        @Query("storeID") storeID: Int? = null,
         @Query("pageSize") pageSize: Int = 50 // adjust sesuai kebutuhan
     ): List<CheapSharkDeal>
 
