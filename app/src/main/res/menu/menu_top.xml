@@ -4,6 +4,6 @@
     <item
         android:id="@+id/action_detail"
         android:title="@string/details_fragment_label"
-        android:icon="@drawable/apkicon"
+        android:icon="@drawable/apkicon_detail"
         app:showAsAction="always" />
 </menu>

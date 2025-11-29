@@ -12,6 +12,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.navigation.ui.setupWithNavController
 import com.example.aplikasi_gamedex.databinding.ActivityMainBinding
+import com.google.android.material.appbar.AppBarLayout
 
 class MainActivity : AppCompatActivity() {
 
