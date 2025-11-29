@@ -34,7 +34,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.SplashFragment,
                 R.id.ViewPagerFragment,
                 R.id.SalesFragment,
-                R.id.SettingsFragment
+                R.id.SettingsFragment,
+                R.id.FavoritesFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
