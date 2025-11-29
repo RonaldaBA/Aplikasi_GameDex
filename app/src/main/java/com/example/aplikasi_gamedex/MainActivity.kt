@@ -41,6 +41,7 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setupWithNavController(navController)
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
+            binding.appBarLayout.setExpanded(true, true)
             when (destination.id) {
                 R.id.SplashFragment -> {
                     binding.toolbar.visibility = View.GONE
