@@ -1,5 +1,6 @@
 package com.example.aplikasi_gamedex
 
+import android.content.Context.MODE_PRIVATE
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -65,6 +67,7 @@ class SalesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        applySavedTheme()
         super.onViewCreated(view, savedInstanceState)
 
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
@@ -197,6 +200,17 @@ class SalesFragment : Fragment() {
         }
 
         adapter.setData(filtered, steamPriceCache)
+    }
+
+    private fun applySavedTheme() {
+        val prefs = requireContext().getSharedPreferences("theme_prefs", MODE_PRIVATE)
+        val isDark = prefs.getBoolean("dark_mode", false)
+
+        if (isDark) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        } else {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+        }
     }
 
     override fun onDestroyView() {

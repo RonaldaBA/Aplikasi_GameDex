@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
@@ -22,27 +23,42 @@
                 android:layout_height="match_parent"
                 android:scaleType="centerCrop" />
 
+            <!-- FAVORITE BUTTON -->
+            <TextView
+                android:id="@+id/favorite_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|end"
+                android:layout_marginEnd="20dp"
+                android:layout_marginTop="50dp"
+                android:text="Add to Favorites"
+                android:background="@drawable/transparant_background"
+                android:padding="5dp"
+                android:textColor="#FF0000"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+
             <TextView
                 android:id="@+id/game_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="bottom|start"
+                android:layout_margin="16dp"
                 android:text="Loading..."
                 android:textColor="#FFF"
                 android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_gravity="bottom|start"
-                android:layout_margin="16dp"/>
+                android:textStyle="bold" />
 
-            <!-- ⭐ FAVORITE BUTTON -->
             <ImageButton
                 android:id="@+id/btnFavorite"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
+                android:layout_gravity="top|end"
                 android:layout_margin="12dp"
                 android:background="@android:color/transparent"
-                android:src="@android:drawable/btn_star_big_off"
                 android:contentDescription="favorite button"
-                android:layout_gravity="top|end" />
+                android:src="@android:drawable/btn_star_big_off"
+                app:tint="#ff0000" />
         </FrameLayout>
 
         <!-- Deals & Prices -->
