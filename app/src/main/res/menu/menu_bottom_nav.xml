@@ -5,7 +5,7 @@
         android:icon="@drawable/salesicon"
         android:title="@string/sales_fragment_label" />
     <item
-        android:id="@+id/ThirdFragment"
+        android:id="@+id/FavoritesFragment"
         android:icon="@drawable/favicon"
         android:title="@string/favorite_fragment_label" />
     <item

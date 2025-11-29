@@ -26,28 +26,17 @@
     </fragment>
 
     <fragment
-        android:id="@+id/HomeFragment"
-        android:name="com.example.aplikasi_gamedex.HomeFragment"
-        android:label="@string/home_fragment_label"
-        tools:layout="@layout/fragment_home">
-
-        <action
-            android:id="@+id/action_HomeFragment_to_SalesFragment"
-            app:destination="@id/SalesFragment" />
-
-    </fragment>
-    <fragment
         android:id="@+id/SalesFragment"
         android:name="com.example.aplikasi_gamedex.SalesFragment"
         android:label="@string/sales_fragment_label"
         tools:layout="@layout/fragment_sales">
 
         <action
-            android:id="@+id/action_SalesFragment_to_HomeFragment"
-            app:destination="@id/HomeFragment" />
-        <action
             android:id="@+id/action_SalesFragment_to_DetailsGamesFragment"
             app:destination="@id/DetailsGamesFragment" />
+        <action
+            android:id="@+id/action_SalesFragment_to_FavoritesFragment"
+            app:destination="@id/FavoritesFragment" />
     </fragment>
     <fragment
         android:id="@+id/DetailsFragment"
@@ -82,5 +71,14 @@
             android:id="@+id/action_ViewPagerFragment_to_SalesFragment"
             app:destination="@id/SalesFragment"
             app:popUpTo="@id/ViewPagerFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/FavoritesFragment"
+        android:name="com.example.aplikasi_gamedex.FavoritesFragment"
+        android:label="@string/favorite_fragment_label"
+        tools:layout="@layout/fragment_favorites" >
+        <action
+            android:id="@+id/action_FavoritesFragment_to_SalesFragment"
+            app:destination="@id/SalesFragment" />
     </fragment>
 </navigation>

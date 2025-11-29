@@ -10,7 +10,7 @@ interface CheapSharkAPI {
     @GET("deals")
     suspend fun getDeals(
         @Query("storeID") storeID: Int? = null,
-        @Query("pageSize") pageSize: Int = 50 // adjust sesuai kebutuhan
+        @Query("pageSize") pageSize: Int = 60
     ): List<CheapSharkDeal>
 
     companion object {

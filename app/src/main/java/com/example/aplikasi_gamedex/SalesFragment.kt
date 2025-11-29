@@ -1,6 +1,7 @@
 package com.example.aplikasi_gamedex
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +16,10 @@ import com.example.aplikasi_gamedex.models.CheapSharkDeal
 import com.example.aplikasi_gamedex.models.SteamPriceOverview
 import com.example.aplikasi_gamedex.network.CheapSharkAPI
 import com.example.aplikasi_gamedex.network.SteamStoreApi
+import com.google.android.gms.ads.MobileAds
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.LoadAdError
+import com.google.android.gms.ads.AdListener
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -100,6 +105,23 @@ class SalesFragment : Fragment() {
             binding.btnEpic.isSelected = epicSelected
             applyFilters()
         }
+
+        val adView = binding.adView
+
+        adView.adListener = object : AdListener() {
+            override fun onAdLoaded() {
+                Log.d("AdMob", "Banner loaded")
+            }
+
+            override fun onAdFailedToLoad(error: LoadAdError) {
+                Log.e("AdMob", "Banner failed: ${error.message} (${error.code})")
+            }
+        }
+
+        // Load ad
+        val adRequest = AdRequest.Builder().build()
+        adView.loadAd(adRequest)
+
     }
 
     private fun loadDeals() {
