@@ -20,9 +20,9 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        applySavedTheme()
-        super.onCreate(savedInstanceState)
+        applySavedTheme()   // ⬅ wajib sebelum super.onCreate()
 
+        super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -38,27 +38,25 @@ class MainActivity : AppCompatActivity() {
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
+
+        // bottom nav
         binding.bottomNav.setupWithNavController(navController)
 
+        // Kontrol visibilitas toolbar & bottom nav
         navController.addOnDestinationChangedListener { _, destination, _ ->
             binding.appBarLayout.setExpanded(true, true)
             when (destination.id) {
-                R.id.SplashFragment -> {
+                R.id.SplashFragment, R.id.ViewPagerFragment -> {
                     binding.toolbar.visibility = View.GONE
                     binding.bottomNav.visibility = View.GONE
                 }
-                R.id.ViewPagerFragment -> {
-                    binding.toolbar.visibility = View.GONE
-                    binding.bottomNav.visibility = View.GONE
-                }
-                R.id.DetailsFragment -> {
-                    binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = false
-                    binding.bottomNav.visibility = View.GONE
-                }
+
+                R.id.DetailsFragment,
                 R.id.DetailsGamesFragment -> {
                     binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = false
                     binding.bottomNav.visibility = View.GONE
                 }
+
                 else -> {
                     binding.toolbar.visibility = View.VISIBLE
                     binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = true
@@ -90,13 +88,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * FIX tema agar tidak kedip-kedip saat navigate
+     */
     private fun applySavedTheme() {
         val prefs = getSharedPreferences("theme_prefs", MODE_PRIVATE)
         val isDark = prefs.getBoolean("dark_mode", false)
+
         if (isDark) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         } else {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         }
     }
 }
