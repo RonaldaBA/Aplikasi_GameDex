@@ -5,10 +5,6 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/HomeFragment">
 
-    <action
-        android:id="@+id/action_to_DetailsFragment"
-        app:destination="@id/DetailsFragment" />
-
     <fragment
         android:id="@+id/HomeFragment"
         android:name="com.example.aplikasi_gamedex.HomeFragment"

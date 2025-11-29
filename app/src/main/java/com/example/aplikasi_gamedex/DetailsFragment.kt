@@ -1,67 +1,60 @@
 package com.example.aplikasi_gamedex
 
-import android.content.ActivityNotFoundException
-import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.net.toUri
-import com.example.aplikasi_gamedex.databinding.FragmentDetailsBinding
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
+import coil.load
+import com.example.aplikasi_gamedex.databinding.FragmentDetailGameBinding
+import com.example.aplikasi_gamedex.network.SteamStoreApi
+import kotlinx.coroutines.launch
 
 class DetailsFragment : Fragment() {
-    private var _binding: FragmentDetailsBinding? = null
 
-    // This property is only valid between onCreateView and
-    // onDestroyView.
+    private var _binding: FragmentDetailGameBinding? = null
     private val binding get() = _binding!!
+
+    // Gunakan by navArgs() yang aman, tetapi periksa argumennya
+    private val args: DetailsFragmentArgs by navArgs()
+    private val steamApi by lazy { SteamStoreApi.create() }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        _binding = FragmentDetailGameBinding.inflate(inflater, container, false)
         return binding.root
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonSteam.setOnClickListener {
-            val steamWebUrl = "https://store.steampowered.com/"
-            val steamUri = "steam://store/".toUri()
+        // HANYA JALANKAN JIKA gameID ADA
+        // Ini akan mencegah crash jika halaman ini dibuka secara langsung
+        if (args.gameID.isNotEmpty()) {
+            loadGameDetails(args.gameID)
+        }
+    }
 
-            val intent = Intent(Intent.ACTION_VIEW, steamUri).apply {
-                addCategory(Intent.CATEGORY_BROWSABLE)
-            }
-
-            // Pengecekan apakah perangkat memiliki aplikasinya
+    private fun loadGameDetails(gameId: String) {
+        lifecycleScope.launch {
             try {
-                startActivity(intent)
-            } catch (_: ActivityNotFoundException) {
-                // Jika aplikasi tidak ada, buka web browser
-                val webIntent = Intent(Intent.ACTION_VIEW, steamWebUrl.toUri())
-                startActivity(webIntent)
+                val response = steamApi.getAppDetails(gameId, country = "ID", lang = "en")
+                val gameDetails = response[gameId]?.data
+                if (gameDetails != null) {
+                    binding.gameTitle.text = gameDetails.name
+                    binding.gameBanner.load(gameDetails.header_image)
+                    binding.minRequirementsText.text = gameDetails.pc_requirements?.minimum ?: "N/A"
+                } else {
+                    // Handle error or no data case
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                // Handle exception
             }
-        }
-
-        binding.buttonEpicGames.setOnClickListener {
-            val epicWeb = "https://store.epicgames.com/"
-            val intent = Intent(Intent.ACTION_VIEW, epicWeb.toUri()).apply {
-                addCategory(Intent.CATEGORY_BROWSABLE)
-            }
-            startActivity(intent)
-        }
-
-        binding.buttonGOG.setOnClickListener {
-            val gogWeb = "https://www.gog.com/"
-            val intent = Intent(Intent.ACTION_VIEW, gogWeb.toUri()).apply {
-                addCategory(Intent.CATEGORY_BROWSABLE)
-            }
-            startActivity(intent)
         }
     }
 
