@@ -33,6 +33,17 @@
                 android:textStyle="bold"
                 android:layout_gravity="bottom|start"
                 android:layout_margin="16dp"/>
+
+            <!-- ⭐ FAVORITE BUTTON -->
+            <ImageButton
+                android:id="@+id/btnFavorite"
+                android:layout_width="42dp"
+                android:layout_height="42dp"
+                android:layout_margin="12dp"
+                android:background="@android:color/transparent"
+                android:src="@android:drawable/btn_star_big_off"
+                android:contentDescription="favorite button"
+                android:layout_gravity="top|end" />
         </FrameLayout>
 
         <!-- Deals & Prices -->

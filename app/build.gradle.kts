@@ -4,6 +4,7 @@ plugins {
     // TAMBAHKAN KEMBALI PLUGIN INI
     alias(libs.plugins.androidx.navigation.safeargs.kotlin)
     id("kotlin-parcelize")
+    id("kotlin-kapt")
 }
 
 android {
@@ -59,4 +60,6 @@ dependencies {
     implementation("androidx.recyclerview:recyclerview:1.4.0")
     implementation("io.coil-kt:coil:2.7.0")
     implementation("com.google.android.gms:play-services-ads:22.2.0")
+    implementation("com.github.bumptech.glide:glide:4.16.0")
+    kapt("com.github.bumptech.glide:compiler:4.16.0")
 }

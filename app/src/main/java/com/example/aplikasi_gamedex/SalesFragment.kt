@@ -42,11 +42,11 @@ class SalesFragment : Fragment() {
     // Adapter
     private val adapter = GamesAdapter(onClick = { deal ->
         val bundle = Bundle().apply {
-            putString("gameID", deal.gameID ?: "")
-            putString("title", deal.title)
+            putParcelable("deal", deal)
         }
         findNavController().navigate(R.id.DetailsGamesFragment, bundle)
     })
+
 
     // FILTER STATE (Class-level)
     private var steamSelected = false

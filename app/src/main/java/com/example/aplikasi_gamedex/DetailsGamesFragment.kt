@@ -11,6 +11,7 @@ import coil.load
 import com.example.aplikasi_gamedex.databinding.FragmentDetailGameBinding
 import com.example.aplikasi_gamedex.models.CheapSharkDeal
 import com.example.aplikasi_gamedex.network.CheapSharkAPI
+import com.example.aplikasi_gamedex.repository.FavoritesRepository
 import kotlinx.coroutines.launch
 
 class DetailsGamesFragment : Fragment() {
@@ -18,8 +19,7 @@ class DetailsGamesFragment : Fragment() {
     private var _binding: FragmentDetailGameBinding? = null
     private val binding get() = _binding!!
 
-    private var gameTitleArg: String? = null
-    private var gameIDArg: String? = null
+    private var dealArg: CheapSharkDeal? = null
 
     private val dealsAdapter = DealsAdapter()
     private val cheapSharkApi by lazy { CheapSharkAPI.create() }
@@ -27,14 +27,13 @@ class DetailsGamesFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        arguments?.let { bundle ->
-            gameIDArg = bundle.getString("gameID") ?: bundle.getString("gameId")
-            gameTitleArg = bundle.getString("title") ?: bundle.getString("gameTitle")
-        }
+        // Ambil data deal dari Bundle
+        dealArg = arguments?.getParcelable("deal")
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailGameBinding.inflate(inflater, container, false)
@@ -48,55 +47,65 @@ class DetailsGamesFragment : Fragment() {
         binding.rvDeals.adapter = dealsAdapter
         binding.rvDeals.isNestedScrollingEnabled = false
 
-        binding.gameTitle.text = gameTitleArg ?: "Unknown Game"
+        val deal = dealArg
 
-        val gameId = gameIDArg
-        val gameTitle = gameTitleArg
+        if (deal != null) {
+            // Set title & banner
+            binding.gameTitle.text = deal.title
+            binding.gameBanner.load(deal.thumb)
 
-        if (!gameId.isNullOrBlank() && !gameTitle.isNullOrBlank()) {
-            // Panggil loadDeals dengan gameID untuk Steam/GOG dan title untuk Epic
-            loadDeals(gameId, gameTitle)
+            // Set icon awal
+            updateFavoriteIcon(deal)
+
+            // Favorite button click
+            binding.btnFavorite.setOnClickListener {
+                if (FavoritesRepository.isFavorite(deal.dealID)) {
+                    FavoritesRepository.removeFavorite(deal)
+                } else {
+                    FavoritesRepository.addFavorite(deal)
+                }
+                updateFavoriteIcon(deal)
+            }
+
+            // Load deals lain (Steam/GOG by gameID, Epic by title)
+            loadDeals(deal.gameID, deal.title)
         } else {
-            binding.gameTitle.text = "No game ID or title provided."
+            binding.gameTitle.text = "Game data not found."
         }
     }
 
-    private fun loadDeals(gameId: String, gameTitleArg: String) {
+    private fun updateFavoriteIcon(deal: CheapSharkDeal) {
+        val isFav = FavoritesRepository.isFavorite(deal.dealID)
+        binding.btnFavorite.setImageResource(
+            if (isFav) R.drawable.ic_favorite_filled
+            else R.drawable.ic_favorite_border
+        )
+    }
+
+    private fun loadDeals(gameId: String?, title: String) {
         lifecycleScope.launch {
             try {
                 val allDeals = mutableListOf<CheapSharkDeal>()
 
-                // Steam (storeID = 1)
-                val steamDeals = cheapSharkApi.getDeals(storeID = 1, pageSize = 50)
-                allDeals.addAll(steamDeals)
+                // Steam (1)
+                allDeals += cheapSharkApi.getDeals(storeID = 1, pageSize = 50)
 
-                // Epic Games (storeID = 2) — ambil semua, filter fleksibel nanti
-                val epicDeals = cheapSharkApi.getDeals(storeID = 25, pageSize = 50)
-                allDeals.addAll(epicDeals)
+                // Epic (25)
+                allDeals += cheapSharkApi.getDeals(storeID = 25, pageSize = 50)
 
-                // GOG (storeID = 7)
-                val gogDeals = cheapSharkApi.getDeals(storeID = 7, pageSize = 50)
-                allDeals.addAll(gogDeals)
+                // GOG (7)
+                allDeals += cheapSharkApi.getDeals(storeID = 7, pageSize = 50)
 
-                // Filter:
+                // Filter deals:
                 val filteredDeals = allDeals.filter { deal ->
-                    // Steam & GOG: filter pakai gameID
-                    deal.gameID?.trim()?.equals(gameId.trim(), ignoreCase = true) == true
-                            // Epic: filter pakai title
-                            || deal.title?.contains(gameTitleArg, ignoreCase = true) == true
+                    // Steam & GOG → pakai gameID
+                    deal.gameID == gameId ||
+                            // Epic → pakai title
+                            deal.title.contains(title, ignoreCase = true)
                 }
 
-                // Banner game pertama
-                filteredDeals.firstOrNull()?.thumb?.let { url ->
-                    binding.gameBanner.load(url)
-                }
-
-                // Kirim ke adapter
+                // Tampilkan di adapter
                 dealsAdapter.submitList(filteredDeals)
-
-                if (filteredDeals.isEmpty()) {
-                    binding.gameTitle.text = "No deals found for this game."
-                }
 
             } catch (e: Exception) {
                 e.printStackTrace()
