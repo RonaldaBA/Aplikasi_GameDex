@@ -55,6 +55,10 @@ class MainActivity : AppCompatActivity() {
                     binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = false
                     binding.bottomNav.visibility = View.GONE
                 }
+                R.id.DetailsGamesFragment -> {
+                    binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = false
+                    binding.bottomNav.visibility = View.GONE
+                }
                 else -> {
                     binding.toolbar.visibility = View.VISIBLE
                     binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = true

@@ -1,114 +1,63 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#121212"
-    android:fillViewport="true">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="12dp"
+    android:background="#1E1E1E"
+    android:layout_marginBottom="8dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/salePrice"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingBottom="30dp">
+        android:text="Sale Price"
+        android:textColor="#8DF7A4"
+        android:textSize="14sp"
+        android:layout_marginTop="4dp"/>
 
-        <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:background="#222222">
+    <TextView
+        android:id="@+id/normalPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Normal Price"
+        android:textColor="#AAA"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="IMAGE BANNER HERE"
-                android:textColor="#555"
-                android:layout_gravity="center"/>
+    <TextView
+        android:id="@+id/savings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Savings"
+        android:textColor="#F78D8D"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Clair Obscur: Expedition 33"
-                android:textColor="#FFF"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                android:layout_gravity="bottom|start"
-                android:layout_margin="16dp"/>
-        </FrameLayout>
+    <TextView
+        android:id="@+id/metacritic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Metacritic"
+        android:textColor="#FFD700"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Features"
-            android:textColor="#FFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"/>
+    <TextView
+        android:id="@+id/releaseDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Release Date"
+        android:textColor="#AAA"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"/>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvFeatures"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginHorizontal="12dp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="System Requirements"
-            android:textColor="#FFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="24dp"
-            android:layout_marginStart="16dp"/>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="#1E1E1E"
-            android:padding="16dp"
-            android:layout_margin="16dp">
-
-            <TextView
-                android:text="Minimum:"
-                android:textColor="#FFF"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:text="• OS: Windows 10\n• Processor: Intel Core i7\n• Memory: 8 GB RAM\n• Storage: 55 GB available"
-                android:textColor="#AAA"
-                android:layout_marginTop="8dp"
-                android:lineSpacingExtra="4dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-        </LinearLayout>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Deals &amp; Prices"
-            android:textColor="#FFF"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"/>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvDeals"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:nestedScrollingEnabled="false"
-            android:layout_marginTop="8dp"/>
-
-        <Button
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Go official website"
-            android:backgroundTint="#8DA4F7"
-            android:textColor="#000"
-            android:layout_margin="16dp"/>
-
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+    <TextView
+        android:id="@+id/dealRating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Deal Rating"
+        android:textColor="#8DA4F7"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp"/>
+</LinearLayout>

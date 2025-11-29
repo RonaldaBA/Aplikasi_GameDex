@@ -10,6 +10,22 @@
         app:destination="@id/DetailsFragment" />
 
     <fragment
+        android:id="@+id/DetailsGamesFragment"
+        android:name="com.example.aplikasi_gamedex.DetailsGamesFragment"
+        android:label="Details">
+
+        <argument
+            android:name="gameID"
+            app:argType="string"
+            android:defaultValue="" />
+
+        <argument
+            android:name="title"
+            app:argType="string"
+            android:defaultValue="Unknown Game" />
+    </fragment>
+
+    <fragment
         android:id="@+id/HomeFragment"
         android:name="com.example.aplikasi_gamedex.HomeFragment"
         android:label="@string/home_fragment_label"
@@ -29,6 +45,9 @@
         <action
             android:id="@+id/action_SalesFragment_to_HomeFragment"
             app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_SalesFragment_to_DetailsGamesFragment"
+            app:destination="@id/DetailsGamesFragment" />
     </fragment>
     <fragment
         android:id="@+id/DetailsFragment"
