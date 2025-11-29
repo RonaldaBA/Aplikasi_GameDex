@@ -2,24 +2,21 @@ package com.example.aplikasi_gamedex
 
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
+import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.aplikasi_gamedex.databinding.FragmentSalesBinding
 import com.example.aplikasi_gamedex.models.CheapSharkDeal
+import com.example.aplikasi_gamedex.models.SteamPriceOverview
 import com.example.aplikasi_gamedex.network.CheapSharkAPI
+import com.example.aplikasi_gamedex.network.SteamStoreApi
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
-import com.example.aplikasi_gamedex.network.SteamStoreApi
-import com.example.aplikasi_gamedex.models.SteamPriceOverview
 
 class SalesFragment : Fragment() {
 
@@ -29,16 +26,15 @@ class SalesFragment : Fragment() {
     private var fullList: List<CheapSharkDeal> = emptyList()
 
     private val api by lazy { CheapSharkAPI.create() }
-
-    // hanya store Steam(1), GOG(7), Epic(25)
-    private val storeIds = listOf(1, 7, 25)
-
     private val steamApi by lazy { SteamStoreApi.create() }
 
-    // cache: map appid -> SteamPriceOverview
+    // Store IDs
+    private val storeIds = listOf(1, 7, 25)
+
+    // Cache Steam price
     private val steamPriceCache = mutableMapOf<String, SteamPriceOverview?>()
 
-    // KEMBALIKAN KE TOAST: Mengklik item hanya akan menampilkan Toast
+    // Adapter
     private val adapter = GamesAdapter(onClick = { deal ->
         val bundle = Bundle().apply {
             putString("gameID", deal.gameID ?: "")
@@ -47,7 +43,12 @@ class SalesFragment : Fragment() {
         findNavController().navigate(R.id.DetailsGamesFragment, bundle)
     })
 
+    // FILTER STATE (Class-level)
+    private var steamSelected = false
+    private var gogSelected = false
+    private var epicSelected = false
 
+    private var searchQuery: String = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,116 +60,121 @@ class SalesFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         super.onViewCreated(view, savedInstanceState)
 
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
         binding.recycler.adapter = adapter
 
         loadDeals()
-        var steamSelected = false
-        var gogSelected = false
-        var epicSelected = false
 
+        // SEARCH LISTENER
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                searchQuery = query ?: ""
+                applyFilters()
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                searchQuery = newText ?: ""
+                applyFilters()
+                return true
+            }
+        })
+
+        // BUTTON FILTER LISTENERS
         binding.btnSteam.setOnClickListener {
             steamSelected = !steamSelected
             binding.btnSteam.isSelected = steamSelected
-            applyStoreFilterButtons(steamSelected, gogSelected, epicSelected)
+            applyFilters()
         }
 
         binding.btnGOG.setOnClickListener {
             gogSelected = !gogSelected
             binding.btnGOG.isSelected = gogSelected
-            applyStoreFilterButtons(steamSelected, gogSelected, epicSelected)
+            applyFilters()
         }
 
         binding.btnEpic.setOnClickListener {
             epicSelected = !epicSelected
             binding.btnEpic.isSelected = epicSelected
-            applyStoreFilterButtons(steamSelected, gogSelected, epicSelected)
+            applyFilters()
         }
-
     }
 
     private fun loadDeals() {
         binding.progress.visibility = View.VISIBLE
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                // 1) fetch deals per store
                 val deferreds = storeIds.map { id ->
                     async { api.getDeals(storeID = id, pageSize = 50) }
                 }
+
                 val lists = deferreds.map { it.await() }
-                val merged: List<CheapSharkDeal> = lists
+                val merged = lists
                     .flatten()
                     .distinctBy { it.dealID }
                     .sortedByDescending { (it.savings ?: "0").toDoubleOrNull() ?: 0.0 }
 
-                // 2) steam appids
+                // Fetch Steam app IDs
                 val steamAppIds = merged
                     .filter { it.storeID == "1" }
                     .mapNotNull { it.gameID?.takeIf { id -> id.isNotBlank() } }
                     .distinct()
 
-                // 3) fetch steam prices only for uncached items
                 val idsToFetch = steamAppIds.filter { !steamPriceCache.containsKey(it) }
+
                 if (idsToFetch.isNotEmpty()) {
                     val fetchDeferred = idsToFetch.map { appid ->
                         async {
                             try {
-                                val resp = steamApi.getAppDetails(appid, country = "ID", lang = "en")
+                                val resp = steamApi.getAppDetails(appid, "ID", "en")
                                 resp[appid]?.data?.price_overview
                             } catch (e: Exception) {
                                 null
                             }
                         }
                     }
+
                     val results = fetchDeferred.map { it.await() }
                     idsToFetch.forEachIndexed { idx, id -> steamPriceCache[id] = results[idx] }
                 }
 
-                // 4) simpan & tampilkan
-                fullList = merged   // simpan untuk filtering
-
-                adapter.setData(merged, steamPriceCache) // tampilkan default list
-                 // jika chip sudah dicentang, langsung filter
+                fullList = merged
+                adapter.setData(merged, steamPriceCache)
 
             } catch (_: Exception) {
-                // error handling optional
             } finally {
                 binding.progress.visibility = View.GONE
             }
         }
     }
 
-    private fun applyStoreFilterButtons(steam: Boolean, gog: Boolean, epic: Boolean) {
-        // sinkron UI (background/text color) dengan state
-        binding.btnSteam.isSelected = steam
-        binding.btnGOG.isSelected = gog
-        binding.btnEpic.isSelected = epic
-
+    // COMBINED FILTER
+    private fun applyFilters() {
         if (fullList.isEmpty()) return
 
-        val selected = mutableListOf<String>()
-        if (steam) selected.add("1")
-        if (gog) selected.add("7")
-        if (epic) selected.add("25")
+        // 1. Filter by store
+        val selectedStores = mutableListOf<String>()
+        if (steamSelected) selectedStores.add("1")
+        if (gogSelected) selectedStores.add("7")
+        if (epicSelected) selectedStores.add("25")
 
-        val filtered =
-            if (selected.isEmpty()) fullList
-            else fullList.filter { it.storeID in selected }
+        var filtered = if (selectedStores.isEmpty()) {
+            fullList
+        } else {
+            fullList.filter { it.storeID in selectedStores }
+        }
+
+        // 2. Filter by search
+        val q = searchQuery.lowercase().trim()
+        if (q.isNotEmpty()) {
+            filtered = filtered.filter {
+                it.title?.lowercase()?.contains(q) == true
+            }
+        }
 
         adapter.setData(filtered, steamPriceCache)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        binding.recycler.scrollToPosition(0)
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.recycler.scrollToPosition(0)
     }
 
     override fun onDestroyView() {
