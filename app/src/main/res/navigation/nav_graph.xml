@@ -12,7 +12,7 @@
     <fragment
         android:id="@+id/DetailsGamesFragment"
         android:name="com.example.aplikasi_gamedex.DetailsGamesFragment"
-        android:label="Details">
+        android:label="Details Game">
 
         <argument
             android:name="gameID"

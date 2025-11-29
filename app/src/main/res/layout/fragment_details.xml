@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="-10dp"
             android:layout_marginTop="60dp"
-            android:text="Development Build"
+            android:text="v1.0"
             android:textSize="12dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/imageView"
