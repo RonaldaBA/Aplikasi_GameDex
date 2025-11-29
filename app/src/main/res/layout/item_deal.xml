@@ -7,6 +7,16 @@
     android:background="#1E1E1E"
     android:layout_marginBottom="8dp">
 
+    <!-- Store origin -->
+    <TextView
+        android:id="@+id/storeOrigin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Store"
+        android:textColor="#FFFFFF"
+        android:textSize="12sp"
+        android:layout_marginBottom="6dp"/>
+
     <TextView
         android:id="@+id/salePrice"
         android:layout_width="wrap_content"

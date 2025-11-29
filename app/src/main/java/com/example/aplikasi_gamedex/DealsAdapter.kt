@@ -17,6 +17,7 @@ class DealsAdapter : RecyclerView.Adapter<DealsAdapter.VH>() {
     private val items = mutableListOf<CheapSharkDeal>()
 
     inner class VH(val v: View) : RecyclerView.ViewHolder(v) {
+        val storeOrigin: TextView = v.findViewById(R.id.storeOrigin)
         val salePrice: TextView = v.findViewById(R.id.salePrice)
         val normalPrice: TextView = v.findViewById(R.id.normalPrice)
         val savings: TextView = v.findViewById(R.id.savings)
@@ -32,6 +33,7 @@ class DealsAdapter : RecyclerView.Adapter<DealsAdapter.VH>() {
 
     override fun onBindViewHolder(holder: VH, position: Int) {
         val deal = items[position]
+        holder.storeOrigin.text = getStoreName(deal.storeID)
         holder.salePrice.text = "Sale Price: ${deal.salePrice}"
         holder.normalPrice.text = "Normal Price: ${deal.normalPrice}"
         holder.savings.text = "Savings: ${deal.savings ?: "0"}%"
@@ -47,6 +49,17 @@ class DealsAdapter : RecyclerView.Adapter<DealsAdapter.VH>() {
         items.clear()
         items.addAll(new)
         notifyDataSetChanged()
+    }
+
+    private fun getStoreName(storeIdRaw: String?): String {
+        // storeIdRaw kadang-nya sudah String "1" atau null
+        val id = storeIdRaw?.trim()?.toIntOrNull()
+        return when (id) {
+            1 -> "Steam"
+            7 -> "GOG"
+            25 -> "Epic Games"
+            else -> storeIdRaw?.let { "Store #$it" } ?: "Unknown Store"
+        }
     }
 }
 

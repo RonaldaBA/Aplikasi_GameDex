@@ -71,7 +71,7 @@ class DetailsGamesFragment : Fragment() {
                 allDeals.addAll(steamDeals)
 
                 // Epic Games (storeID = 2) — ambil semua, filter fleksibel nanti
-                val epicDeals = cheapSharkApi.getDeals(storeID = 2, pageSize = 50)
+                val epicDeals = cheapSharkApi.getDeals(storeID = 25, pageSize = 50)
                 allDeals.addAll(epicDeals)
 
                 // GOG (storeID = 7)
@@ -104,7 +104,6 @@ class DetailsGamesFragment : Fragment() {
             }
         }
     }
-
 
     override fun onDestroyView() {
         super.onDestroyView()
