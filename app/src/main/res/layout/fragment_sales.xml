@@ -20,23 +20,38 @@
 
         <Button
             android:id="@+id/btnSteam"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
-            android:text="Steam" />
+            android:background="@drawable/filter_button_background"
+            android:drawableLeft="@drawable/steamlogoicon_filter"
+            android:text="Steam"
+            android:textAlignment="textEnd"
+            android:textColor="@drawable/filter_button_text_color"
+            app:backgroundTint="@null" />
 
         <Button
             android:id="@+id/btnGOG"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="GOG" />
+            android:background="@drawable/filter_button_background"
+            android:drawableLeft="@drawable/goggameslogoicon_filter"
+            android:text="GOG"
+            android:textAlignment="textEnd"
+            android:textColor="@drawable/filter_button_text_color"
+            app:backgroundTint="@null" />
 
         <Button
             android:id="@+id/btnEpic"
-            android:layout_width="wrap_content"
+            android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:text="Epic" />
+            android:background="@drawable/filter_button_background"
+            android:drawableLeft="@drawable/epicgameslogoicon_filter"
+            android:text="Epic"
+            android:textAlignment="textEnd"
+            android:textColor="@drawable/filter_button_text_color"
+            app:backgroundTint="@null" />
     </LinearLayout>
 
     <!-- PROGRESS -->

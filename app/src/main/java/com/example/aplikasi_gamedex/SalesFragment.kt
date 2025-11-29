@@ -72,19 +72,21 @@ class SalesFragment : Fragment() {
 
         binding.btnSteam.setOnClickListener {
             steamSelected = !steamSelected
+            binding.btnSteam.isSelected = steamSelected
             applyStoreFilterButtons(steamSelected, gogSelected, epicSelected)
         }
 
         binding.btnGOG.setOnClickListener {
             gogSelected = !gogSelected
+            binding.btnGOG.isSelected = gogSelected
             applyStoreFilterButtons(steamSelected, gogSelected, epicSelected)
         }
 
         binding.btnEpic.setOnClickListener {
             epicSelected = !epicSelected
+            binding.btnEpic.isSelected = epicSelected
             applyStoreFilterButtons(steamSelected, gogSelected, epicSelected)
         }
-
 
     }
 
@@ -140,6 +142,11 @@ class SalesFragment : Fragment() {
     }
 
     private fun applyStoreFilterButtons(steam: Boolean, gog: Boolean, epic: Boolean) {
+        // sinkron UI (background/text color) dengan state
+        binding.btnSteam.isSelected = steam
+        binding.btnGOG.isSelected = gog
+        binding.btnEpic.isSelected = epic
+
         if (fullList.isEmpty()) return
 
         val selected = mutableListOf<String>()
@@ -153,8 +160,6 @@ class SalesFragment : Fragment() {
 
         adapter.setData(filtered, steamPriceCache)
     }
-
-
 
     override fun onPause() {
         super.onPause()
