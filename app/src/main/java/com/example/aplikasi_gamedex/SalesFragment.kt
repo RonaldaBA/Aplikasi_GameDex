@@ -25,6 +25,8 @@ class SalesFragment : Fragment() {
     private var _binding: FragmentSalesBinding? = null
     private val binding get() = _binding!!
 
+    private var fullList: List<CheapSharkDeal> = emptyList()
+
     private val api by lazy { CheapSharkAPI.create() }
 
     // hanya store Steam(1), GOG(7), Epic(25)
@@ -57,13 +59,23 @@ class SalesFragment : Fragment() {
         binding.recycler.adapter = adapter
 
         loadDeals()
+        binding.chipSteam.setOnCheckedChangeListener { _, _ ->
+            applyStoreFilter()
+        }
+        binding.chipGOG.setOnCheckedChangeListener { _, _ ->
+            applyStoreFilter()
+        }
+        binding.chipEpic.setOnCheckedChangeListener { _, _ ->
+            applyStoreFilter()
+        }
+
     }
 
     private fun loadDeals() {
         binding.progress.visibility = View.VISIBLE
         viewLifecycleOwner.lifecycleScope.launch {
             try {
-                // 1) fetch deals from CheapShark per store (as before)
+                // 1) fetch deals per store
                 val deferreds = storeIds.map { id ->
                     async { api.getDeals(storeID = id, pageSize = 50) }
                 }
@@ -73,42 +85,62 @@ class SalesFragment : Fragment() {
                     .distinctBy { it.dealID }
                     .sortedByDescending { (it.savings ?: "0").toDoubleOrNull() ?: 0.0 }
 
-                // 2) collect unique steam appids from merged (storeID == "1")
+                // 2) steam appids
                 val steamAppIds = merged
-                    .filter { it.storeID == "1" }            // Steam deals only
+                    .filter { it.storeID == "1" }
                     .mapNotNull { it.gameID?.takeIf { id -> id.isNotBlank() } }
                     .distinct()
 
-                // 3) fetch steam prices in parallel, but only for IDs not in cache
+                // 3) fetch steam prices only for uncached items
                 val idsToFetch = steamAppIds.filter { !steamPriceCache.containsKey(it) }
                 if (idsToFetch.isNotEmpty()) {
                     val fetchDeferred = idsToFetch.map { appid ->
                         async {
                             try {
                                 val resp = steamApi.getAppDetails(appid, country = "ID", lang = "en")
-                                val appResp = resp[appid]
-                                appResp?.data?.price_overview
+                                resp[appid]?.data?.price_overview
                             } catch (e: Exception) {
-                                e.printStackTrace()
                                 null
                             }
                         }
                     }
                     val results = fetchDeferred.map { it.await() }
-                    // populate cache
                     idsToFetch.forEachIndexed { idx, id -> steamPriceCache[id] = results[idx] }
                 }
 
-                // 4) pass merged deals and cache map to adapter
-                adapter.setData(merged, steamPriceCache)
+                // 4) simpan & tampilkan
+                fullList = merged   // simpan untuk filtering
+
+                adapter.setData(merged, steamPriceCache) // tampilkan default list
+
+                applyStoreFilter()  // jika chip sudah dicentang, langsung filter
+
             } catch (_: Exception) {
-//                e.printStackTrace()
-//                Toast.makeText(requireContext(), "Gagal ambil data: ${e.message}", Toast.LENGTH_LONG).show()
+                // error handling optional
             } finally {
                 binding.progress.visibility = View.GONE
             }
         }
     }
+
+    private fun applyStoreFilter() {
+        if (fullList.isEmpty()) return
+
+        val selectedStores = mutableListOf<String>()
+
+        if (binding.chipSteam.isChecked) selectedStores.add("1")   // Steam
+        if (binding.chipGOG.isChecked) selectedStores.add("7")     // GOG
+        if (binding.chipEpic.isChecked) selectedStores.add("25")   // Epic
+
+        val filtered = if (selectedStores.isEmpty()) {
+            fullList
+        } else {
+            fullList.filter { it.storeID in selectedStores }
+        }
+
+        adapter.setData(filtered, steamPriceCache)
+    }
+
 
     override fun onPause() {
         super.onPause()
