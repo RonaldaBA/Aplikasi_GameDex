@@ -59,15 +59,25 @@ class SalesFragment : Fragment() {
         binding.recycler.adapter = adapter
 
         loadDeals()
-        binding.chipSteam.setOnCheckedChangeListener { _, _ ->
-            applyStoreFilter()
+        var steamSelected = false
+        var gogSelected = false
+        var epicSelected = false
+
+        binding.btnSteam.setOnClickListener {
+            steamSelected = !steamSelected
+            applyStoreFilterButtons(steamSelected, gogSelected, epicSelected)
         }
-        binding.chipGOG.setOnCheckedChangeListener { _, _ ->
-            applyStoreFilter()
+
+        binding.btnGOG.setOnClickListener {
+            gogSelected = !gogSelected
+            applyStoreFilterButtons(steamSelected, gogSelected, epicSelected)
         }
-        binding.chipEpic.setOnCheckedChangeListener { _, _ ->
-            applyStoreFilter()
+
+        binding.btnEpic.setOnClickListener {
+            epicSelected = !epicSelected
+            applyStoreFilterButtons(steamSelected, gogSelected, epicSelected)
         }
+
 
     }
 
@@ -112,8 +122,7 @@ class SalesFragment : Fragment() {
                 fullList = merged   // simpan untuk filtering
 
                 adapter.setData(merged, steamPriceCache) // tampilkan default list
-
-                applyStoreFilter()  // jika chip sudah dicentang, langsung filter
+                 // jika chip sudah dicentang, langsung filter
 
             } catch (_: Exception) {
                 // error handling optional
@@ -123,23 +132,21 @@ class SalesFragment : Fragment() {
         }
     }
 
-    private fun applyStoreFilter() {
+    private fun applyStoreFilterButtons(steam: Boolean, gog: Boolean, epic: Boolean) {
         if (fullList.isEmpty()) return
 
-        val selectedStores = mutableListOf<String>()
+        val selected = mutableListOf<String>()
+        if (steam) selected.add("1")
+        if (gog) selected.add("7")
+        if (epic) selected.add("25")
 
-        if (binding.chipSteam.isChecked) selectedStores.add("1")   // Steam
-        if (binding.chipGOG.isChecked) selectedStores.add("7")     // GOG
-        if (binding.chipEpic.isChecked) selectedStores.add("25")   // Epic
-
-        val filtered = if (selectedStores.isEmpty()) {
-            fullList
-        } else {
-            fullList.filter { it.storeID in selectedStores }
-        }
+        val filtered =
+            if (selected.isEmpty()) fullList
+            else fullList.filter { it.storeID in selected }
 
         adapter.setData(filtered, steamPriceCache)
     }
+
 
 
     override fun onPause() {
