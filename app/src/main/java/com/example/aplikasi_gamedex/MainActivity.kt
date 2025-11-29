@@ -30,8 +30,10 @@ class MainActivity : AppCompatActivity() {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.HomeFragment,
-                R.id.SalesFragment
+                R.id.SplashFragment,
+                R.id.ViewPagerFragment,
+                R.id.SalesFragment,
+                R.id.SettingsFragment
             )
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -39,7 +41,14 @@ class MainActivity : AppCompatActivity() {
 
         navController.addOnDestinationChangedListener { _, destination, _ ->
             when (destination.id) {
-                R.id.HomeFragment -> binding.toolbar.visibility = View.GONE
+                R.id.SplashFragment -> {
+                    binding.toolbar.visibility = View.GONE
+                    binding.bottomNav.visibility = View.GONE
+                }
+                R.id.ViewPagerFragment -> {
+                    binding.toolbar.visibility = View.GONE
+                    binding.bottomNav.visibility = View.GONE
+                }
                 R.id.DetailsFragment -> {
                     binding.toolbar.menu.findItem(R.id.action_detail)?.isVisible = false
                     binding.bottomNav.visibility = View.GONE

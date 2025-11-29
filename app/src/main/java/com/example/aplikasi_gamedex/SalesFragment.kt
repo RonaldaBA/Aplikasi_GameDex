@@ -56,7 +56,7 @@ class SalesFragment : Fragment() {
 
     private fun loadDeals() {
         binding.progress.visibility = View.VISIBLE
-        lifecycleScope.launch {
+        viewLifecycleOwner.lifecycleScope.launch {
             try {
                 // 1) fetch deals from CheapShark per store (as before)
                 val deferreds = storeIds.map { id ->
@@ -96,9 +96,9 @@ class SalesFragment : Fragment() {
 
                 // 4) pass merged deals and cache map to adapter
                 adapter.setData(merged, steamPriceCache)
-            } catch (e: Exception) {
-                e.printStackTrace()
-                Toast.makeText(requireContext(), "Gagal ambil data: ${e.message}", Toast.LENGTH_LONG).show()
+            } catch (_: Exception) {
+//                e.printStackTrace()
+//                Toast.makeText(requireContext(), "Gagal ambil data: ${e.message}", Toast.LENGTH_LONG).show()
             } finally {
                 binding.progress.visibility = View.GONE
             }
