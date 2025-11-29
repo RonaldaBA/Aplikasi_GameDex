@@ -1,6 +1,9 @@
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
+    // TAMBAHKAN KEMBALI PLUGIN INI
+    alias(libs.plugins.androidx.navigation.safeargs.kotlin)
+    id("kotlin-parcelize")
 }
 
 android {

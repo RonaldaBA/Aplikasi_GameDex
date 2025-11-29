@@ -20,7 +20,16 @@ class GamesAdapter(
     inner class VH(private val binding: ItemGameBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(deal: CheapSharkDeal) {
             binding.tvTitle.text = deal.title
-            binding.tvStore.text = storeNameFromId(deal.storeID.toIntOrNull() ?: -1)
+            val storeId = deal.storeID.toIntOrNull() ?: -1
+            binding.tvStore.text = storeNameFromId(storeId)
+
+            val storeIconRes = when (storeId) {
+                1 -> R.drawable.steamlogoicon
+                7 -> R.drawable.goggameslogoicon
+                25 -> R.drawable.epicgameslogoicon
+                else -> R.drawable.apkicon // fallback drawable
+            }
+            binding.imgStore.setImageResource(storeIconRes)
 
             // Prefer Steam local price if store is Steam and steamPrices contains entry
             val localPriceText = if (deal.storeID == "1" && !deal.gameID.isNullOrBlank()) {

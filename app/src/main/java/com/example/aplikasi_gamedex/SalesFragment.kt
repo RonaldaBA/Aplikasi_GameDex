@@ -37,7 +37,7 @@ class SalesFragment : Fragment() {
     // cache: map appid -> SteamPriceOverview
     private val steamPriceCache = mutableMapOf<String, SteamPriceOverview?>()
 
-    // adapter now accepts an optional steamPriceMap
+    // KEMBALIKAN KE TOAST: Mengklik item hanya akan menampilkan Toast
     private val adapter = GamesAdapter(onClick = { deal ->
         Toast.makeText(requireContext(), "Klik: ${deal.title}", Toast.LENGTH_SHORT).show()
     })
