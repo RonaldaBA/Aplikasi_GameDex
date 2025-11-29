@@ -2,7 +2,6 @@
 <androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#121212"
     android:fillViewport="true">
 
     <LinearLayout
@@ -15,7 +14,7 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="220dp"
-            android:background="#222222">
+            android:background="#646464">
 
             <ImageView
                 android:id="@+id/game_banner"
@@ -48,14 +47,16 @@
 
         <!-- Deals & Prices -->
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="387dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="16dp"
+            android:background="#1E1E1E"
+            android:padding="5dp"
             android:text="Deals &amp; Prices"
             android:textColor="#FFF"
             android:textSize="18sp"
-            android:textStyle="bold"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="16dp"/>
+            android:textStyle="bold" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvDeals"

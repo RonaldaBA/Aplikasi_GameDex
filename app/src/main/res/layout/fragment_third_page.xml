@@ -5,64 +5,104 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="32dp"
+    android:background="#FFFFFF"
     tools:context=".onboarding.pages.ThirdPage">
 
     <ImageView
         android:id="@+id/image3"
-        android:layout_width="408dp"
-        android:layout_height="268dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="32dp"
+        android:background="#F8FAFF"
         android:contentDescription="Ilustrasi Aplikasi Siap Digunakan"
         android:scaleType="fitCenter"
         android:src="@drawable/apkicon"
+        android:padding="24dp"
         app:layout_constraintBottom_toTopOf="@+id/title_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.25" />
+        app:layout_constraintWidth_percent="0.8"
+        app:layout_constraintHeight_percent="0.35" />
 
     <TextView
         android:id="@+id/title_text"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="32dp"
         android:gravity="center"
-        android:text="Aplikasi Siap Digunakan!"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="24sp"
+        android:text="Siap Hunting Game Favorit!"
+        android:textColor="#1A365D"
+        android:textSize="28sp"
         android:textStyle="bold"
+        android:letterSpacing="0.02"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/image3" />
 
     <TextView
         android:id="@+id/description_text"
-        android:layout_width="348dp"
-        android:layout_height="118dp"
-        android:layout_marginTop="48dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="32dp"
         android:gravity="center"
-        android:text="Selamat! Anda telah menyelesaikan pengenalan. Mulailah eksplorasi dan manfaatkan semua fitur di aplikasi ini sekarang juga."
-        android:textColor="?android:attr/textColorPrimary"
+        android:lineSpacingExtra="8sp"
+        android:text="Selamat! Anda siap menjadi smart gamer. Dapatkan game impian dengan harga terbaik dan hemat hingga 80%!"
+        android:textColor="#718096"
         android:textSize="16sp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/title_text" />
 
     <Button
         android:id="@+id/finish"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
-        android:backgroundTint="#007AFF"
-        android:minHeight="56dp"
-        android:text="Mulai Aplikasi Sekarang"
-        android:textSize="18sp"
+        android:layout_height="56dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="32dp"
+        app:backgroundTint="#1B5E20"
+        android:text="Mulai Hunting Game"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
         android:textStyle="bold"
-        app:cornerRadius="12dp"
+        android:letterSpacing="0.02"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        app:cornerRadius="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/finish"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="#E2E8F0" />
+
+        <View
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_marginEnd="8dp"
+            android:background="#E2E8F0" />
+
+        <View
+            android:layout_width="16dp"
+            android:layout_height="8dp"
+            android:background="#1B2838" />
+
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
