@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:padding="12dp"
     android:background="#1E1E1E"
@@ -70,4 +71,17 @@
         android:textColor="#8DA4F7"
         android:textSize="14sp"
         android:layout_marginTop="2dp"/>
+
+    <Button
+        android:id="@+id/btnOpenStore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Go to Store"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/filter_button_background"
+        android:textColor="#FFFFFF"
+        android:padding="6dp"
+        app:backgroundTint="@null"
+        android:textAllCaps="false"/>
+
 </LinearLayout>

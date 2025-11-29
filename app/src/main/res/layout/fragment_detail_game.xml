@@ -54,15 +54,5 @@
             android:layout_marginTop="8dp"
             android:layout_marginHorizontal="12dp"/>
 
-        <!-- Go to official website button -->
-        <Button
-            android:id="@+id/go_official_website_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Go official website"
-            android:backgroundTint="#8DA4F7"
-            android:textColor="#000"
-            android:layout_margin="16dp"/>
-
     </LinearLayout>
 </androidx.core.widget.NestedScrollView>
